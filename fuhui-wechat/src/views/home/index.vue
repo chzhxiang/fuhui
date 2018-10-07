@@ -5,7 +5,7 @@
         <div class="my_header_v4_main">
           <div class="my_header_v4_avatar">
             <div class="my_header_v4_avatar_img">
-              <img id="headPic" src="http://storage.360buyimg.com/i.imageUpload/4d6574656f723139393331353134323936363537373539_mid.jpg">
+              <img id="headPic" :src="wechatHeadImg">
             </div>
           </div>
           <div class="my_header_v4_msg">
@@ -53,26 +53,56 @@
 </template>
 <script>
 import { Dialog } from 'vant'
+import { getUserInfo } from '@/api/wechatUser'
+import { getToken } from '@/utils/auth'
+import { Toast } from 'vant'
 
 export default {
   data() {
     return {
       active: 3,
-      points: '1000',
-      isPhone: true,
-      phone: 13633406174,
+      points: '0',
+      isPhone: false,
+      phone: '',
       isCarNum: false,
-      carNum: '沪A888888'
+      carNum: '沪A888888',
+      wechatHeadImg: ''
     }
   },
+  created() {
+    this.getUserInfo()
+  },
   methods: {
+    getUserInfo() {
+      getUserInfo(getToken()).then(response => {
+        console.log(response.resultData.info)
+        const info = response.resultData.info
+        if (response.resultCode === '1') {
+          // 初始化数据
+
+          if (info.points !== null) {
+            this.points = info.points
+          }
+          if (info.phone !== null) {
+            this.isPhone = true
+            this.phone = info.phone
+          }
+          if (info.carNumber !== null) {
+            this.isCarNum = true
+            this.carNum = info.carNumber
+          }
+          if (info.wechatHeadImg !== null) {
+            this.wechatHeadImg = info.wechatHeadImg
+          }
+        } else {
+          Toast('服务器异常，请稍后重试~')
+        }
+      })
+    },
     checkPhone() {
       console.log(11111)
       if (this.isPhone === false) {
-        Dialog.alert({
-          message: '请先绑定手机号！'
-        }).then(() => {
-        })
+        Toast('请先绑定手机号！')
       } else {
         this.$router.push({
           path: '/bindCarNum'

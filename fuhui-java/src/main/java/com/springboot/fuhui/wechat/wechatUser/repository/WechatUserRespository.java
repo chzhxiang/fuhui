@@ -16,4 +16,6 @@ public interface WechatUserRespository extends PagingAndSortingRepository<Wechat
     WechatUserModel getByIdIs(String id);
 
     Page<WechatUserModel> getByPhoneIs(String phone, Pageable pageable);
+
+    WechatUserModel getByOpenIdIs(String openId);
 }

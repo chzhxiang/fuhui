@@ -77,9 +77,9 @@ public class CorsFilter implements Filter {
                 }
 
             }
-
         } else {
-            response.setHeader("Access-Control-Allow-Origin", "http://localhost:9528");
+            String originHeader = request.getHeader("Origin");
+            response.setHeader("Access-Control-Allow-Origin", originHeader);
         }
 
         response.setHeader("Access-Control-Allow-Headers", "Content-Type,token");

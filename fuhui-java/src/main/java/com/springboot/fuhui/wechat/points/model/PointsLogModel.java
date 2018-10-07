@@ -18,7 +18,7 @@ public class PointsLogModel {
     private Date createDate;
     private String openId;
     private String phone;
-    private String points;
+    private Integer points;
     // 积分变动类型 0：服务台增加 1：用户扫描增加 2：消费
     private String type;
 
@@ -58,11 +58,11 @@ public class PointsLogModel {
         this.phone = phone;
     }
 
-    public String getPoints() {
+    public Integer getPoints() {
         return points;
     }
 
-    public void setPoints(String points) {
+    public void setPoints(Integer points) {
         this.points = points;
     }
 

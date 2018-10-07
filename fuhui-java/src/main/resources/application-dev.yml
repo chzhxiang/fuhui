@@ -1,20 +1,16 @@
 #server setting
 server:
-  port: 8080
+  port: 8081
   tomcat:
     uri-encoding: utf-8
     #最大连接数
-    max-connections: 1000
+    max-connections: 10000
     #最大线程数，最大并发数
     max-threads: 1000
     #最小备用线程数
     min-spare-threads: 20
     #线程数达到maxThreads后，后续请求会被放入一个等待队列，accept-count是这个队列的大小
     accept-count: 500
-    #tomcat连接器
-    connector: org.apache.coyote.http11.Http11NioProtocol
-    #tomcat优化
-    optimize: true
     #是否开启access log ，默认: false
     accesslog:
       enabled: true

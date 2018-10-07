@@ -12,17 +12,19 @@ import java.util.Date;
  * @create: 2018-10-02 23:08
  **/
 @Entity
-@Table(name = "cours")
+@Table(name = "cards")
 public class CardModel {
     private String id;
     private Date createDate;
     private Date updateDate;
     private String openId;
     private String phone;
-    // 卡片类型 0：线上课程 1：篮球场
+    // 卡片类型 0：停车场 1：在线课程 2：篮球场
     private String type;
     // 状态 0：未使用 1：已使用
     private String status;
+    // 产品名称
+    private String productName;
 
     @Id
     @GeneratedValue(generator = "paymentableGenerator")
@@ -82,5 +84,13 @@ public class CardModel {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }

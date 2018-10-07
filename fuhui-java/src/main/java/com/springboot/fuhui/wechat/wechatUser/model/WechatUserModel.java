@@ -23,7 +23,7 @@ public class WechatUserModel {
     private Date createDate;
     private Date updateDate;
     // 积分
-    private String points;
+    private Integer points;
     // 车牌号
     private String carNumber;
 
@@ -77,11 +77,11 @@ public class WechatUserModel {
         this.updateDate = updateDate;
     }
 
-    public String getPoints() {
+    public Integer getPoints() {
         return points;
     }
 
-    public void setPoints(String points) {
+    public void setPoints(Integer points) {
         this.points = points;
     }
 

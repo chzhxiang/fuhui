@@ -18,7 +18,7 @@ public class WechatOrderModel_ {
 
     public static volatile SingularAttribute<WechatOrderModel, Date> orderTime;//订单创建时间
 
-    public static volatile SingularAttribute<WechatOrderModel, Double> orderMoney;//订单金额
+    public static volatile SingularAttribute<WechatOrderModel, Integer> orderMoney;//订单金额
 
     public static volatile SingularAttribute<WechatOrderModel, String> orderComment;//订单描述
 

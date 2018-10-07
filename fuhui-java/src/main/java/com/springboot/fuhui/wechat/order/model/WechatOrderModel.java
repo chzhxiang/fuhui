@@ -15,7 +15,7 @@ public class WechatOrderModel {
 
 	private Date orderTime;//订单创建时间
 
-	private Double orderMoney;//订单金额
+	private Integer orderMoney;//订单金额
 
 	private String orderComment;//订单描述
 
@@ -37,9 +37,11 @@ public class WechatOrderModel {
 
 	private Date updateDate;
 
-	private String payType; // 支付类型 0：微信支付 1：积分支付
+	private String payType; // 支付类型 0：积分支付 1：微信支付
 
 	private String phone;
+
+	private String productName;
 
 	@Id
 	@GeneratedValue(generator = "paymentableGenerator")
@@ -69,11 +71,11 @@ public class WechatOrderModel {
 		this.orderTime = orderTime;
 	}
 
-	public Double getOrderMoney() {
+	public Integer getOrderMoney() {
 		return orderMoney;
 	}
 
-	public void setOrderMoney(Double orderMoney) {
+	public void setOrderMoney(Integer orderMoney) {
 		this.orderMoney = orderMoney;
 	}
 
@@ -171,5 +173,13 @@ public class WechatOrderModel {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 }

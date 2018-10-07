@@ -13,10 +13,11 @@
       <van-cell :value="name" :label="desc" title="商品名称" />
       <van-cell value="x1" title="商品数量" />
       <van-cell :value="price / 100 | format" title="商品价格" />
-      <van-cell value="积分支付" title="支付方式" />
+      <van-cell :value="payType" title="支付方式" />
     </van-cell-group>
     <van-submit-bar
       :price="price"
+      :loading="isload"
       button-text="提交订单"
       @submit="submitOrder()"
     />
@@ -24,6 +25,9 @@
 </template>
 <script>
 import { Dialog } from 'vant'
+import { getProductById } from '@/api/product'
+import { submitOrder } from '@/api/order'
+import { Toast } from 'vant'
 
 export default {
   filters: {
@@ -44,14 +48,36 @@ export default {
   },
   data() {
     return {
-      id: this.$route.query.id,
-      tag: '积分',
-      name: '停车场抵用券',
-      price: 1000,
-      desc: '线上支付停车费用时自动抵扣'
+      isload: false,
+      id: null,
+      payType: null,
+      name: null,
+      price: null,
+      desc: null
     }
   },
+  created() {
+    this.getProductById()
+  },
   methods: {
+    getProductById() {
+      getProductById(this.$route.query.id).then(response => {
+        const info = response.resultData.info
+        console.log(info)
+        if (info !== null) {
+          // 初始化数据
+          this.id = info.id
+          this.name = info.name
+          this.price = info.price
+          this.desc = info.productDesc
+          if (info.type === '0') {
+            this.payType = '积分支付'
+          } else {
+            this.payType = '微信支付'
+          }
+        }
+      })
+    },
     onClickLeft() {
       this.$router.go(-1)
     },
@@ -61,14 +87,21 @@ export default {
       })
     },
     submitOrder() {
-      console.log(this.id)
-      // 后台进行下单以及支付等操作，操作成功后
-      Dialog.alert({
-        message: '支付成功'
-      }).then(() => {
-        this.$router.push({
-          path: '/home'
-        })
+      this.isload = true
+      submitOrder(this.id).then(response => {
+        if (response.resultCode === '1') {
+          Dialog.alert({
+            message: '支付成功'
+          }).then(() => {
+            this.isload = false
+            this.$router.push({
+              path: '/home'
+            })
+          })
+        } else {
+          this.isload = false
+          Toast(response.resultMsg)
+        }
       })
     }
   }

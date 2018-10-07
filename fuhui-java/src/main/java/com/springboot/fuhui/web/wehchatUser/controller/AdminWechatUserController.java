@@ -166,7 +166,7 @@ public class AdminWechatUserController {
 
         // 增加用户积分
         WechatUserModel wechatUserModel = wechatUserRespository.getByIdIs(id);
-        wechatUserModel.setPoints(new BigDecimal(wechatUserModel.getPoints()).add(new BigDecimal(points)).toString());
+        wechatUserModel.setPoints(new BigDecimal(wechatUserModel.getPoints()).add(new BigDecimal(points)).intValue());
         wechatUserModel = wechatUserRespository.save(wechatUserModel);
 
         // 增加积分变动日志
@@ -174,7 +174,7 @@ public class AdminWechatUserController {
         pointsLogModel.setCreateDate(new Date());
         pointsLogModel.setOpenId(wechatUserModel.getOpenId());
         pointsLogModel.setPhone(wechatUserModel.getPhone());
-        pointsLogModel.setPoints(points);
+        pointsLogModel.setPoints(Integer.parseInt(points));
         pointsLogModel.setType("0");
         pointsLogResponsitory.save(pointsLogModel);
 

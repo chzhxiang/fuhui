@@ -94,7 +94,7 @@ public class WechatOrderController {
 
         wechatUserModel = wechatUserRespository.getByOpenIdIs(wechatUserModel.getOpenId());
 
-        if (wechatUserModel.getPoints() < productModel.getPrice()) {
+        if (wechatUserModel.getPoints() < productModel.getPointsPrice()) {
             json.setResultCode("0");
             json.setResultMsg("积分不足");
             return json;
@@ -103,7 +103,7 @@ public class WechatOrderController {
         // 如果当前支付类型是积分
         if ("0".equals(productModel.getType())) {
             // 先计算账户变动
-            wechatUserModel.setPoints(wechatUserModel.getPoints() - productModel.getPrice());
+            wechatUserModel.setPoints(wechatUserModel.getPoints() - productModel.getPointsPrice());
             wechatUserModel.setUpdateDate(new Date());
 
             // 增加积分变动log
@@ -111,7 +111,7 @@ public class WechatOrderController {
             pointsLogModel.setCreateDate(new Date());
             pointsLogModel.setOpenId(wechatUserModel.getOpenId());
             pointsLogModel.setPhone(wechatUserModel.getPhone());
-            pointsLogModel.setPoints(productModel.getPrice());
+            pointsLogModel.setPoints(productModel.getPointsPrice());
             // 积分变动类型 0：服务台增加 1：用户扫描增加 2：消费
             pointsLogModel.setType("2");
 
@@ -120,7 +120,7 @@ public class WechatOrderController {
             wechatOrderModel.setPayTime(new Date());
             wechatOrderModel.setOpenId(wechatUserModel.getOpenId());
             wechatOrderModel.setPhone(wechatOrderModel.getPhone());
-            wechatOrderModel.setOrderMoney(productModel.getPrice());
+            wechatOrderModel.setOrderMoney(productModel.getPointsPrice());
             wechatOrderModel.setOrderStatus("1");
             wechatOrderModel.setPayType(productModel.getType());
             wechatOrderModel.setProductNo(productModel.getId());

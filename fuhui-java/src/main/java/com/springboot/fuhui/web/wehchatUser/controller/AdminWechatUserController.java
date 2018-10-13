@@ -124,6 +124,33 @@ public class AdminWechatUserController {
     }
 
     /**
+     * 解绑手机
+     * @return
+     * @throws IOException
+     */
+    @PostMapping(value = "/delPhone")
+    public CommonJson delPhone() throws IOException {
+        String params = HttpUtils.getBodyString(ContextHolderUtils.getRequest().getReader());
+        logger.info("AdminWechatUserController.delPhone>>>>>>>>>>>>params:" + params);
+
+        JSONObject jsonObject = JSON.parseObject(params);
+        String id = jsonObject.getString("id");
+        WechatUserModel wechatUserModel = wechatUserRespository.getByIdIs(id);
+        wechatUserModel.setPhone("");
+        wechatUserModel = wechatUserRespository.save(wechatUserModel);
+
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("info", wechatUserModel);
+
+        CommonJson json = new CommonJson();
+        json.setResultCode("1");
+        json.setResultMsg("success");
+        json.setResultData(map);
+
+        return json;
+    }
+
+    /**
      * 解绑车牌
      * @return
      * @throws IOException

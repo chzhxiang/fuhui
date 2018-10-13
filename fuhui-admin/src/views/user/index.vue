@@ -36,11 +36,6 @@
           {{ scope.row.points }}
         </template>
       </el-table-column>
-      <el-table-column label="车牌号" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.carNumber }}
-        </template>
-      </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button
@@ -50,7 +45,7 @@
           <el-button
             size="mini"
             type="danger"
-            @click="delCarNumber(scope.row.id)">解绑车牌</el-button>
+            @click="delPhone(scope.row.id)">解绑手机</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -68,7 +63,7 @@
 </template>
 
 <script>
-import { delCarNumber, addPoints, getWechatList } from '@/api/user'
+import { delPhone, addPoints, getWechatList } from '@/api/user'
 import moment from 'moment'
 
 export default {
@@ -140,13 +135,13 @@ export default {
         })
       })
     },
-    delCarNumber(id) {
-      this.$confirm('此操作解绑车牌将不可逆，请确认操作', '提示', {
+    delPhone(id) {
+      this.$confirm('解绑手机号将不可逆，请确认操作', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        delCarNumber(id).then(response => {
+        delPhone(id).then(response => {
           if (response.resultCode === '1') {
             this.$message({
               type: 'success',

@@ -6,22 +6,20 @@
       </el-form-item>
       <el-form-item label="订单状态">
         <el-select v-model="orderStatus" clearable placeholder="请选择">
-            <el-option
+          <el-option
             v-for="item in orderStatusList"
             :key="item.value"
             :label="item.label"
-            :value="item.value">
-            </el-option>
+            :value="item.value" />
         </el-select>
       </el-form-item>
       <el-form-item label="支付类型">
         <el-select v-model="payType" clearable placeholder="请选择">
-            <el-option
+          <el-option
             v-for="item in payTypeList"
             :key="item.value"
             :label="item.label"
-            :value="item.value">
-            </el-option>
+            :value="item.value" />
         </el-select>
       </el-form-item>
       <el-form-item label="系统订单号">
@@ -62,7 +60,7 @@
       </el-table-column>
       <el-table-column label="订单金额" align="center" width="150">
         <template slot-scope="scope">
-          {{ scope.row.orderMoney }}
+          {{ scope.row.orderMoney / 100 }}
         </template>
       </el-table-column>
       <el-table-column label="系统订单号" align="center" width="200">
@@ -88,7 +86,7 @@
       </el-table-column>
       <el-table-column label="订单支付类型" align="center" width="150">
         <template slot-scope="scope">
-          <span v-if="scope.row.payType === '0'">微信支付</span>
+          <span v-if="scope.row.payType === '1'">微信支付</span>
           <span v-else>积分支付</span>
         </template>
       </el-table-column>
@@ -159,25 +157,25 @@ export default {
       txOrderNo: null,
       orderStatus: null,
       orderStatusList: [{
-          value: null,
-          label: '请选择'
+        value: null,
+        label: '请选择'
       }, {
-          value: '0',
-          label: '创建'
+        value: '0',
+        label: '创建'
       }, {
-          value: '1',
-          label: '已完成'
+        value: '1',
+        label: '已完成'
       }],
       payType: null,
       payTypeList: [{
-          value: null,
-          label: '请选择'
+        value: null,
+        label: '请选择'
       }, {
-          value: '0',
-          label: '微信支付'
+        value: '0',
+        label: '积分支付'
       }, {
-          value: '1',
-          label: '积分支付'
+        value: '1',
+        label: '微信支付'
       }]
     }
   },

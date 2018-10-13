@@ -17,8 +17,11 @@ public class ProductModel {
     private String name;
     private String productDesc;
     private String imageURL;
-    private Integer price;
-    // 产品类型 0.积分 1.现金
+    // 现金价格
+    private Integer cashPrice;
+    // 积分价格
+    private Integer pointsPrice;
+    // 产品类型 0.停车场 1.篮球场 2.线上课程A 3.线上课程B
     private String type;
 
     @Id
@@ -57,12 +60,20 @@ public class ProductModel {
         this.imageURL = imageURL;
     }
 
-    public Integer getPrice() {
-        return price;
+    public Integer getCashPrice() {
+        return cashPrice;
     }
 
-    public void setPrice(Integer price) {
-        this.price = price;
+    public void setCashPrice(Integer cashPrice) {
+        this.cashPrice = cashPrice;
+    }
+
+    public Integer getPointsPrice() {
+        return pointsPrice;
+    }
+
+    public void setPointsPrice(Integer pointsPrice) {
+        this.pointsPrice = pointsPrice;
     }
 
     public String getType() {

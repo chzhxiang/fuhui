@@ -18,7 +18,8 @@
     "vue": "^2.5.17",
     "vue-custom-keyboard": "^1.0.0",
     "vue-js-cookie": "^2.1.0",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "weixin-js-sdk": "^1.4.0-test"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.4",

@@ -1,8 +1,5 @@
 <template>
-  <div class="dashboard-container">
-    <div class="dashboard-text">name:{{ name }}</div>
-    <div class="dashboard-text">roles:<span v-for="role in roles" :key="role">{{ role }}</span></div>
-  </div>
+  <div>富荟广场</div>
 </template>
 
 <script>

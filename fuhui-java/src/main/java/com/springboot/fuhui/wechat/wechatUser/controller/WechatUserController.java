@@ -14,14 +14,17 @@ import com.springboot.fuhui.system.utils.StaffCacheUtil;
 import com.springboot.fuhui.web.adminUser.model.AdminUserModel;
 import com.springboot.fuhui.wechat.wechatUser.model.WechatUserModel;
 import com.springboot.fuhui.wechat.wechatUser.repository.WechatUserRespository;
+import me.chanjar.weixin.common.api.WxConsts;
+import me.chanjar.weixin.common.error.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,6 +50,9 @@ public class WechatUserController {
     @Autowired
     SMSRepository smsRepository;
 
+    @Autowired
+    private WxMpService wxMpService;
+
     /**
      * 获取token，完成腾讯交互获取微信用户信息，并相关数据存入缓存
      * @return
@@ -54,10 +60,15 @@ public class WechatUserController {
      * @throws ExecutionException
      */
     @PostMapping(value = "/getToken")
-    public CommonJson getToken() throws IOException, ExecutionException {
+    public CommonJson getToken(HttpServletResponse response) throws IOException, ExecutionException {
         String params = HttpUtils.getBodyString(ContextHolderUtils.getRequest().getReader());
 
         logger.info("WechatUserController.getToken>>>>>>>>>>>>params:" + params);
+
+        String url = wxMpService.oauth2buildAuthorizationUrl("http://fuhui.kaixindaka.com/mp/wechatUser/getCode", WxConsts.OAuth2Scope.SNSAPI_USERINFO, null);
+        logger.info(">>>>>>>>>>>>>>>>>>>url:" + url);
+        response.sendRedirect(url);
+
 
         JSONObject jsonObject = JSON.parseObject(params);
         String key = jsonObject.getString("key");
@@ -101,6 +112,13 @@ public class WechatUserController {
             return json;
         }
 
+        return null;
+    }
+
+    @GetMapping(value = "/getCode")
+    public CommonJson getCode(@RequestParam String code) throws WxErrorException {
+        WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
+        WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, "zh_CN");
         return null;
     }
 

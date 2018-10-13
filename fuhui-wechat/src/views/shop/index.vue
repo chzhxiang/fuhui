@@ -7,10 +7,11 @@
     <div v-for="product in productList" :key="product.id">
       <van-card
         :tag="product.tag"
-        :price="product.price"
+        :price="product.price + ' 积分'"
         :desc="product.productDesc"
         :title="product.name"
         :thumb="product.imageURL"
+        currency=""
         num="1"
       >
         <div slot="footer">

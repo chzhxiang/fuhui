@@ -22,6 +22,16 @@ export function delCarNumber(id) {
   })
 }
 
+export function delPhone(id) {
+  return request({
+    url: '/admin/adminWechatUser/delPhone',
+    method: 'post',
+    data: {
+      id
+    }
+  })
+}
+
 export function addPoints(id, points) {
   return request({
     url: '/admin/adminWechatUser/addPoints',

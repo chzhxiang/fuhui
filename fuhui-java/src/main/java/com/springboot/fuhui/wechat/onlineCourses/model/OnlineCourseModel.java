@@ -1,4 +1,4 @@
-package com.springboot.fuhui.wechat.appointment.model;
+package com.springboot.fuhui.wechat.onlineCourses.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -12,8 +12,8 @@ import java.util.Date;
  * @create: 2018-10-02 17:38
  **/
 @Entity
-@Table(name = "cours")
-public class CourseModel {
+@Table(name = "online_course")
+public class OnlineCourseModel {
     private String id;
     // 名称
     private String name;
@@ -23,10 +23,14 @@ public class CourseModel {
     private String address;
     // 创建时间
     private Date createDate;
-    // 上课时间
-    private Date coursDate;
-    // 课程类型
-    private String type;
+    // 更新时间
+    private Date updateDate;
+    // 开始时间
+    private Date startDate;
+    // 结束时间
+    private Date endDate;
+    // 对应产品id
+    private String productId;
 
     @Id
     @GeneratedValue(generator = "paymentableGenerator")
@@ -72,19 +76,35 @@ public class CourseModel {
         this.createDate = createDate;
     }
 
-    public Date getCoursDate() {
-        return coursDate;
+    public Date getUpdateDate() {
+        return updateDate;
     }
 
-    public void setCoursDate(Date coursDate) {
-        this.coursDate = coursDate;
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 
-    public String getType() {
-        return type;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 }

@@ -94,7 +94,7 @@ logging:
 #公众号配置
 wechat:
   mp:
-    appId: wx48a65c390fb2cab3
-    secret: a8ec30ba2417e2d3ea99625c8b9e5a07
+    appId: wxea7b5c253702db34
+    secret: 5bbd5b14df3a196784076a806bd9fbc1
     token: TdbjScsWLoRDLRFYLA27in6o9YSOa6vI
     aesKey:

@@ -1,6 +1,6 @@
 package com.springboot.fuhui.wechat.config;
 
-import com.springboot.springcloudwechatclient.wechat.mp.handler.*;
+import com.springboot.fuhui.wechat.handler.*;
 import me.chanjar.weixin.mp.api.WxMpConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpService;

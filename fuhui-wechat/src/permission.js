@@ -6,6 +6,7 @@ import 'nprogress/nprogress.css'// Progress 进度条样式
 import { Dialog } from 'vant'
 
 router.beforeEach((to, from, next) => {
+  window.location.href = 'http://fuhui.kaixindaka.com/mp/wechatUser/getToken'
   if (getToken()) { // 如果token存在，直接next
     next()
   } else { // 如果token不存，则去服务端取一个，存入cookie

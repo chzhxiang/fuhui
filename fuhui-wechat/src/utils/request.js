@@ -1,9 +1,8 @@
 import axios from 'axios'
 import { getToken } from '@/utils/auth'
-import { Dialog } from 'vant'
 
 const service = axios.create({
-  baseURL: 'http://localhost:8081/', // api 的 base_url
+  baseURL: 'http://fuhui.kaixindaka.com/', // api 的 base_url
   timeout: 5000 // 请求超时时间
 })
 

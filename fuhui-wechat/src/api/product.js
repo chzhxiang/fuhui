@@ -16,3 +16,13 @@ export function getProductById(id) {
     }
   })
 }
+
+export function getProductConfigByProductId(productId) {
+  return request({
+    url: '/mp/wechatProduct/getProductConfigByProductId',
+    method: 'post',
+    data: {
+      productId
+    }
+  })
+}

@@ -74,6 +74,7 @@ public class WechatOrderController {
         JSONObject jsonObject = JSON.parseObject(params);
 
         String id = jsonObject.getString("id");
+        String useNum = jsonObject.getString("useNum");
 
         ProductModel productModel = productRepository.getByIdIs(id);
 

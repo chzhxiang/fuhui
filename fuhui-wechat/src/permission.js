@@ -6,10 +6,14 @@ import 'nprogress/nprogress.css'// Progress 进度条样式
 import { Dialog } from 'vant'
 
 router.beforeEach((to, from, next) => {
-  window.location.href = 'http://fuhui.kaixindaka.com/mp/wechatUser/getToken'
   if (getToken()) { // 如果token存在，直接next
     next()
   } else { // 如果token不存，则去服务端取一个，存入cookie
+    // window.location.href = 'http://fuhui.kaixindaka.com/mp/wechatUser/oauth2Wechat'
+    // if (to.query.token !== null && to.query.token !== undefined && to.query.token !== '') {
+    //   setToken(to.query.token)
+    //   next()
+    // }
     getTokens('NA2i760YXSgfsiOlQl8z4ps5Zll73FfM').then(response => {
       if (response.resultCode === '1') {
         setToken(response.resultData.token)

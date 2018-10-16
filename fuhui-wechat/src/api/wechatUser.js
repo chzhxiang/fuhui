@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export function getTokens(key) {
   return request({
     url: '/mp/wechatUser/getToken',
-    method: 'get',
+    method: 'post',
     data: {
       key
     }

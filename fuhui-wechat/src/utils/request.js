@@ -2,7 +2,8 @@ import axios from 'axios'
 import { getToken } from '@/utils/auth'
 
 const service = axios.create({
-  baseURL: 'http://fuhui.kaixindaka.com/', // api 的 base_url
+  // baseURL: 'http://fuhui.kaixindaka.com/', // api 的 base_url
+  baseURL: 'http://localhost:8081/',
   timeout: 5000 // 请求超时时间
 })
 

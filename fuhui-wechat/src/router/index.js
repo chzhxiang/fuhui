@@ -25,6 +25,11 @@ export const constantRouterMap = [
     component: () => import('@/views/card/index')
   },
   {
+    path: '/cardUseLog',
+    name: 'cardUseLog',
+    component: () => import('@/views/card/cardUseLog')
+  },
+  {
     path: '/home',
     name: 'home',
     component: () => import('@/views/home/index')
@@ -59,6 +64,7 @@ export const constantRouterMap = [
     name: 'submitOrder',
     component: () => import('@/views/order/submitOrder')
   }
+
 ]
 
 export default new Router({

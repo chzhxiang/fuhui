@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -75,6 +76,7 @@ public class WechatOrderController {
 
         String id = jsonObject.getString("id");
         String useNum = jsonObject.getString("useNum");
+        String payType = jsonObject.getString("payType");
 
         ProductModel productModel = productRepository.getByIdIs(id);
 
@@ -95,16 +97,21 @@ public class WechatOrderController {
 
         wechatUserModel = wechatUserRespository.getByOpenIdIs(wechatUserModel.getOpenId());
 
-        if (wechatUserModel.getPoints() < productModel.getPointsPrice()) {
-            json.setResultCode("0");
-            json.setResultMsg("积分不足");
-            return json;
-        }
+
 
         // 如果当前支付类型是积分
-        if ("0".equals(productModel.getType())) {
+        if ("0".equals(payType)) {
+
+            int needPayPoints = new BigDecimal(productModel.getPointsPrice()).multiply(new BigDecimal(useNum)).intValue();
+
+            if (wechatUserModel.getPoints() < needPayPoints) {
+                json.setResultCode("0");
+                json.setResultMsg("积分不足");
+                return json;
+            }
+
             // 先计算账户变动
-            wechatUserModel.setPoints(wechatUserModel.getPoints() - productModel.getPointsPrice());
+            wechatUserModel.setPoints(wechatUserModel.getPoints() - needPayPoints);
             wechatUserModel.setUpdateDate(new Date());
 
             // 增加积分变动log
@@ -112,7 +119,7 @@ public class WechatOrderController {
             pointsLogModel.setCreateDate(new Date());
             pointsLogModel.setOpenId(wechatUserModel.getOpenId());
             pointsLogModel.setPhone(wechatUserModel.getPhone());
-            pointsLogModel.setPoints(productModel.getPointsPrice());
+            pointsLogModel.setPoints(needPayPoints);
             // 积分变动类型 0：服务台增加 1：用户扫描增加 2：消费
             pointsLogModel.setType("2");
 
@@ -121,7 +128,7 @@ public class WechatOrderController {
             wechatOrderModel.setPayTime(new Date());
             wechatOrderModel.setOpenId(wechatUserModel.getOpenId());
             wechatOrderModel.setPhone(wechatOrderModel.getPhone());
-            wechatOrderModel.setOrderMoney(productModel.getPointsPrice());
+            wechatOrderModel.setOrderMoney(needPayPoints);
             wechatOrderModel.setOrderStatus("1");
             wechatOrderModel.setPayType(productModel.getType());
             wechatOrderModel.setProductNo(productModel.getId());
@@ -134,9 +141,10 @@ public class WechatOrderController {
             cardModel.setPhone(wechatUserModel.getPhone());
             cardModel.setProductName(productModel.getName());
             // 卡片类型 0：停车场 1：在线课程 2：篮球场
-            cardModel.setType(productModel.getId());
+            cardModel.setType(productModel.getType());
             // 状态 0：未使用 1：已使用
             cardModel.setStatus("0");
+            cardModel.setUseNum(useNum);
 
             // 保存数据
             wechatUserRespository.save(wechatUserModel);

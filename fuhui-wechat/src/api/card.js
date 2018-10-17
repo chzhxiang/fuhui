@@ -6,3 +6,13 @@ export function getCardList() {
     method: 'post'
   })
 }
+
+export function getCardUseLogList(cardId) {
+  return request({
+    url: '/mp/wechatCard/getCardUseLogList',
+    method: 'post',
+    data: {
+      cardId
+    }
+  })
+}

@@ -4,7 +4,8 @@
       <div v-for="card in useList" :key="card.id">
         <van-panel :title="card.productName" :desc="card.desc" status="未使用">
           <div slot="footer">
-            <van-button size="small" type="danger">去使用</van-button>
+            <van-button size="small" plain type="warning">使用记录</van-button>
+            <van-button size="small" type="danger" style="margin-left: 10px;">去使用</van-button>
           </div>
         </van-panel>
         <div style="height: 10px;" />
@@ -56,16 +57,11 @@ export default {
         if (response.resultData !== null) {
           this.flag = true
           const list = response.resultData.list
+          console.log(response.resultData)
           const useList = []
           const unList = []
           for (const index in list) {
-            if (list[index].type === '0') {
-              list[index].desc = '该券可在停车场结费时使用'
-            } else if (list[index].type === '1') {
-              list[index].desc = '该券可在预约在线课程时使用'
-            } else {
-              list[index].desc = '该券可在预约篮球场时使用'
-            }
+            list[index].desc = '剩余使用次数：' + list[index].useNum + ' 次'
             if (list[index].status === '1') {
               unList.push(list[index])
             } else {

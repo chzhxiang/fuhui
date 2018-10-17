@@ -25,6 +25,8 @@ public class CardModel {
     private String status;
     // 产品名称
     private String productName;
+    // 使用次数
+    private String useNum;
 
     @Id
     @GeneratedValue(generator = "paymentableGenerator")
@@ -92,5 +94,13 @@ public class CardModel {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public String getUseNum() {
+        return useNum;
+    }
+
+    public void setUseNum(String useNum) {
+        this.useNum = useNum;
     }
 }

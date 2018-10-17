@@ -1,12 +1,13 @@
 import request from '@/utils/request'
 
-export function submitOrder(id, useNum) {
+export function submitOrder(id, useNum, payType) {
   return request({
     url: '/mp/wechatOrder/submitOrder',
     method: 'post',
     data: {
       id,
-      useNum
+      useNum,
+      payType
     }
   })
 }

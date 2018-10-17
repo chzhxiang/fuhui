@@ -153,7 +153,7 @@ export default {
     },
     submitOrder() {
       this.isload = true
-      submitOrder(this.id, this.useNum).then(response => {
+      submitOrder(this.id, this.useNum, this.payType).then(response => {
         if (response.resultCode === '1') {
           Dialog.alert({
             message: '支付成功'

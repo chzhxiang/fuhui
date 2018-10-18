@@ -17,6 +17,8 @@ public class CardUseLogModel {
     private String id;
     private Date createDate;
     private String openId;
+    // 产品名称
+    private String productName;
     // 卡券核销方
     private String writeOff;
     // 卡券id
@@ -48,6 +50,14 @@ public class CardUseLogModel {
 
     public void setOpenId(String openId) {
         this.openId = openId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getWriteOff() {

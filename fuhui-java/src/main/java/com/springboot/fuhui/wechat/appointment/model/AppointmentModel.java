@@ -22,11 +22,13 @@ public class AppointmentModel {
     private String openId;
     private String phone;
     private String cardId;
-    // 预约时间
-    private String time;
+    // 篮球场预约日期
+    private String appointmentDate;
+    // 篮球场预约时间段
+    private String appointmentPeroid;
     // 状态
     private String status;
-    // 预约类型 0：线上课程 1：篮球场
+    // 预约类型
     private String type;
     // 课程id
     private String courseId;
@@ -83,12 +85,20 @@ public class AppointmentModel {
         this.cardId = cardId;
     }
 
-    public String getTime() {
-        return time;
+    public String getAppointmentDate() {
+        return appointmentDate;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setAppointmentDate(String appointmentDate) {
+        this.appointmentDate = appointmentDate;
+    }
+
+    public String getAppointmentPeroid() {
+        return appointmentPeroid;
+    }
+
+    public void setAppointmentPeroid(String appointmentPeroid) {
+        this.appointmentPeroid = appointmentPeroid;
     }
 
     public String getStatus() {

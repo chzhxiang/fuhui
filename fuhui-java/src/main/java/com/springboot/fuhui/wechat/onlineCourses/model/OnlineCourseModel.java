@@ -31,6 +31,8 @@ public class OnlineCourseModel {
     private Date endDate;
     // 对应产品id
     private String productId;
+    // 限制名额
+    private Integer num;
 
     @Id
     @GeneratedValue(generator = "paymentableGenerator")
@@ -106,5 +108,13 @@ public class OnlineCourseModel {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
     }
 }

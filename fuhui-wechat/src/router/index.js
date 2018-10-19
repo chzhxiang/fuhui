@@ -50,6 +50,21 @@ export const constantRouterMap = [
     component: () => import('@/views/appointment/index')
   },
   {
+    path: '/basketball',
+    name: 'basketball',
+    component: () => import('@/views/appointment/basketball')
+  },
+  {
+    path: '/onlineCourse',
+    name: 'onlineCourse',
+    component: () => import('@/views/appointment/onlineCourse')
+  },
+  {
+    path: '/appointment',
+    name: 'appointment',
+    component: () => import('@/views/appointment/index')
+  },
+  {
     path: '/qrcode',
     name: 'qrcode',
     component: () => import('@/views/qrcode/index')

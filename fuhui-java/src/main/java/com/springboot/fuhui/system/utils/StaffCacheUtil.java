@@ -30,7 +30,7 @@ public class StaffCacheUtil {
 
     private StaffCacheUtil() {
         staffCache = CacheBuilder.newBuilder()
-                .expireAfterWrite(1, TimeUnit.HOURS)
+                .expireAfterWrite(6, TimeUnit.HOURS)
                 .build();
     }
 

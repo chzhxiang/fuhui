@@ -19,7 +19,7 @@ public class CardModel {
     private Date updateDate;
     private String openId;
     private String phone;
-    // 卡片类型 0：停车场 1：在线课程 2：篮球场
+    // 产品类型 0.停车场 1.篮球场 2.线上课程A 3.线上课程B
     private String type;
     // 状态 0：未使用 1：已使用
     private String status;

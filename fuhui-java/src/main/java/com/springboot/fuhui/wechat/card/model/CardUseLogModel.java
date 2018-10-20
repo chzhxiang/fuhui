@@ -21,6 +21,8 @@ public class CardUseLogModel {
     private String productName;
     // 卡券核销方
     private String writeOff;
+    // 卡券状态 0已预约 1已使用 2已核销
+    private String status;
     // 卡券id
     private String cardId;
 
@@ -66,6 +68,14 @@ public class CardUseLogModel {
 
     public void setWriteOff(String writeOff) {
         this.writeOff = writeOff;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getCardId() {

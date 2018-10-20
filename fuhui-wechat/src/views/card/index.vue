@@ -5,7 +5,7 @@
         <van-panel :title="card.productName" :desc="card.desc" status="未使用">
           <div v-if="card.type > 0" slot="footer">
             <van-button v-if="card.useNum > 1" size="small" plain type="warning" @click="useLog(card.id)">使用记录</van-button>
-            <van-button size="small" type="danger" style="margin-left: 10px;" @click="cardUse(card.type)">去使用</van-button>
+            <van-button size="small" type="danger" style="margin-left: 10px;" @click="cardUse(card.type, card.id)">去使用</van-button>
           </div>
         </van-panel>
         <div style="height: 10px;" />
@@ -82,17 +82,23 @@ export default {
         query: { cardId: cardId }
       })
     },
-    cardUse(cardType) {
+    cardUse(cardType, id) {
       console.log(cardType)
       if (cardType === '1') { // 篮球场
         this.$router.push({
           path: '/basketball',
-          query: { cardType: cardType }
+          query: {
+            cardType: cardType,
+            cardId: id
+          }
         })
       } else { // 线上课程
         this.$router.push({
           path: '/onlineCourse',
-          query: { cardType: cardType }
+          query: {
+            cardType: cardType,
+            cardId: id
+          }
         })
       }
     }

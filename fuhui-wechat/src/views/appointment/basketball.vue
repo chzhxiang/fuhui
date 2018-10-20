@@ -11,7 +11,7 @@
     <div style="height: 15px;" />
     <van-cell-group>
       <van-cell value="富荟广场东北角" title="篮球场地址" />
-      <van-cell :value="checkDate | dataFormat" title="预约日期" is-link @click="selectDate" />
+      <van-cell :value="appointmentDate | dataFormat" title="预约日期" is-link @click="selectDate" />
       <van-cell :value="time" title="预约时间段" clickable is-link @click="openActionSheet" />
       <van-cell :value="num" title="剩余场地数" />
     </van-cell-group>
@@ -25,7 +25,7 @@
     />
     <van-datetime-picker
       v-if="flag"
-      v-model="checkDate"
+      v-model="appointmentDate"
       :min-date="minDate"
       :max-date="maxDate"
       type="date"
@@ -36,6 +36,10 @@
 </template>
 <script>
 import moment from 'moment'
+import { Toast } from 'vant'
+import { Dialog } from 'vant'
+
+import { findBasketBallUsePeople, saveBasketBallAppointment } from '@/api/appointment'
 
 export default {
   filters: {
@@ -48,7 +52,7 @@ export default {
       flag: false,
       minDate: moment(new Date()).add(1, 'd').toDate(),
       maxDate: moment(new Date()).add(1, 'M').toDate(),
-      checkDate: moment(new Date()).add(1, 'd').toDate(),
+      appointmentDate: moment(new Date()).add(1, 'd').toDate(),
       time: '',
       actionsheet: false,
       timeList: [
@@ -89,7 +93,12 @@ export default {
     },
     confirm() {
       this.flag = false
-      console.log(moment(this.checkDate).format('YYYY-MM-DD'))
+      console.log(moment(this.appointmentDate).format('YYYY-MM-DD'))
+      if ((this.appointmentDate !== null && this.appointmentDate !== '') && (this.time !== null && this.time !== '')) {
+        findBasketBallUsePeople(moment(this.appointmentDate).format('YYYY-MM-DD'), this.time).then(response => {
+          this.num = 4 - response.resultData.size
+        })
+      }
     },
     cancel() {
       this.flag = false
@@ -100,9 +109,48 @@ export default {
     onSelect(item) {
       this.actionsheet = false
       this.time = item.name
+      if ((this.appointmentDate !== null && this.appointmentDate !== '') && (this.time !== null && this.time !== '')) {
+        findBasketBallUsePeople(moment(this.appointmentDate).format('YYYY-MM-DD'), this.time).then(response => {
+          this.num = 4 - response.resultData.size
+        })
+      }
     },
     submitData() {
       this.isload = true
+      if (this.appointmentDate === null || this.appointmentDate === '') {
+        Toast('请选择预约日期')
+        this.isload = false
+        return
+      }
+      if (this.time === null || this.time === '') {
+        Toast('请选择预约时间段')
+        this.isload = false
+        return
+      }
+      if (this.num < 1) {
+        Toast('当前时间段已约满，请更换预约时间段')
+        this.isload = false
+        return
+      }
+      console.log(this.$route.query.cardId)
+      saveBasketBallAppointment(moment(this.appointmentDate).format('YYYY-MM-DD'), this.time, this.$route.query.cardId).then(response => {
+        if (response.resultCode === '1') {
+          Dialog.alert({
+            message: response.resultMsg
+          }).then(() => {
+            this.isload = false
+            this.$router.push({
+              path: '/card'
+            })
+          })
+        } else {
+          Dialog.alert({
+            message: response.resultMsg
+          }).then(() => {
+            this.isload = false
+          })
+        }
+      })
     }
   }
 }

@@ -14,4 +14,6 @@ import java.util.List;
  **/
 public interface CardRepository extends PagingAndSortingRepository<CardModel, Long>, JpaSpecificationExecutor<CardModel> {
     List<CardModel> findAllByOpenIdOrderByCreateDateDesc(String openId);
+
+    CardModel getByIdIs(String id);
 }

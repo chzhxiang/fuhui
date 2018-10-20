@@ -16,4 +16,6 @@ public interface OnlineCourseRepository extends PagingAndSortingRepository<Onlin
     void deleteById(String id);
 
     OnlineCourseModel getByIdIs(String id);
+
+    List<OnlineCourseModel> findAllByProductId(String cardType);
 }

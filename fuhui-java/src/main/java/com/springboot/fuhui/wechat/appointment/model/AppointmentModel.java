@@ -26,12 +26,14 @@ public class AppointmentModel {
     private String appointmentDate;
     // 篮球场预约时间段
     private String appointmentPeroid;
-    // 状态
+    // 状态 0未使用 1已使用
     private String status;
-    // 预约类型
+    // 产品类型 0.停车场 1.篮球场 2.线上课程A 3.线上课程B
     private String type;
     // 课程id
     private String courseId;
+    // 是否有效 0无效 1有效
+    private String flag;
 
     @Id
     @GeneratedValue(generator = "paymentableGenerator")
@@ -123,5 +125,13 @@ public class AppointmentModel {
 
     public void setCourseId(String courseId) {
         this.courseId = courseId;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
 }

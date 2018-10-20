@@ -22,6 +22,7 @@ import com.springboot.fuhui.wechat.wechatUser.repository.WechatUserRespository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -168,7 +169,7 @@ public class WechatOrderController {
     @PostMapping(value = "/getOrderList")
     public CommonJson getOrderList() {
         Map<String, Object> map = Maps.newHashMap();
-        map.put("list", Lists.newArrayList(wechatOrderResponsitory.findAll()));
+        map.put("list", Lists.newArrayList(wechatOrderResponsitory.findAll(new Sort(Sort.Direction.DESC, "payTime"))));
         CommonJson json = new CommonJson();
         json.setResultCode("1");
         json.setResultMsg("success");

@@ -19,7 +19,7 @@
             实付款：<span class="panel-money-span">￥{{ order.orderMoney / 100 | numberFormat }}</span>
           </div>
           <div v-else class="panel-money">
-            实付积分：<span class="panel-money-span">{{ order.orderMoney / 100 | numberFormat }}</span>
+            实付积分：<span class="panel-money-span">{{ order.orderMoney | numberFormat }}</span>
           </div>
         </van-panel>
         <div style="height: 15px;" />

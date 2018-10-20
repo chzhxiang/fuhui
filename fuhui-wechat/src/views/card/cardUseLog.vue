@@ -11,7 +11,7 @@
     <div v-if="flag">
       <div style="height: 15px;" />
       <div v-for="useLog in useLogList" :key="useLog.id">
-        <van-panel :title="useLog.productName" :status="'核销方：' + useLog.writeOff">
+        <van-panel :title="useLog.productName" status="">
           <div class="panel-div">使用时间: {{ useLog.createDate | dataFormat }}</div>
         </van-panel>
         <div style="height: 10px;" />

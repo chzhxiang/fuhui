@@ -47,3 +47,20 @@ export function bindCarNum(carNum) {
     }
   })
 }
+
+export function findCarNumListByOpenId() {
+  return request({
+    url: '/mp/wechatUser/findCarNumListByOpenId',
+    method: 'post'
+  })
+}
+
+export function delCarNumById(id) {
+  return request({
+    url: '/mp/wechatUser/delCarNumById',
+    method: 'post',
+    data: {
+      id
+    }
+  })
+}

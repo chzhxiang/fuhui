@@ -20,4 +20,8 @@ public interface AppointmentRespository extends PagingAndSortingRepository<Appoi
     List<AppointmentModel> findAllByCourseIdAndFlag(String coursId, String flag);
 
     List<AppointmentModel> findAllByOpenIdAndCourseIdAndFlag(String openid, String courseId, String flag);
+
+    List<AppointmentModel> findAllByOpenIdAndFlagOrderByCreateDateDesc(String openId, String flag);
+
+    AppointmentModel getByIdIs(String id);
 }

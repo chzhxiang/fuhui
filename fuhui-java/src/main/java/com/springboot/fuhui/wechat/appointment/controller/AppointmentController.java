@@ -154,6 +154,7 @@ public class AppointmentController {
         appointmentModel.setFlag("1");
         appointmentModel.setAppointmentDate(appointmentDate);
         appointmentModel.setAppointmentPeroid(appointmentPeroid);
+        appointmentModel.setName("篮球场预约");
         appointmentModel.setCardId(cardId);
         appointmentModel.setType(cardModel.getType());
 
@@ -275,6 +276,10 @@ public class AppointmentController {
         appointmentModel.setCreateDate(new Date());
         appointmentModel.setCardId(cardId);
         appointmentModel.setCourseId(courseId);
+        appointmentModel.setName(onlineCourseModel.getName());
+        appointmentModel.setDescription(onlineCourseModel.getDescription());
+        appointmentModel.setCourseStartDate(onlineCourseModel.getStartDate());
+        appointmentModel.setCourseEndDate(onlineCourseModel.getEndDate());
         appointmentModel.setType(cardModel.getType());
         appointmentModel.setPhone(wechatUserModel.getPhone());
         appointmentModel.setStatus("0");
@@ -298,6 +303,72 @@ public class AppointmentController {
         json.setResultCode("1");
         json.setResultMsg("预约成功");
 
+        return json;
+    }
+
+    /**
+     * 根据openid查询所有预约
+     * @return
+     * @throws IOException
+     */
+    @PostMapping(value = "/findAllAppointmentByOpenId")
+    public CommonJson findAllAppointmentByOpenId() throws IOException {
+        String token = ContextHolderUtils.getRequest().getHeader("token");
+        String params = HttpUtils.getBodyString(ContextHolderUtils.getRequest().getReader());
+
+        logger.info("AppointmentController.findAllAppointmentByOpenId>>>>>>>>>>>>token:" + token + ",params:" + params);
+
+        JSONObject jsonObject = JSON.parseObject(params);
+
+        WechatUserModel wechatUserModel = null;
+
+        try {
+            wechatUserModel = (WechatUserModel) StaffCacheUtil.create().get(token, new Callable<AdminUserModel>() {
+                @Override
+                public AdminUserModel call() throws Exception {
+                    return null;
+                }
+            });
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        List<AppointmentModel> list = appointmentRespository.findAllByOpenIdAndFlagOrderByCreateDateDesc(wechatUserModel.getOpenId(), "1");
+
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("list", list);
+
+        CommonJson json = new CommonJson();
+        json.setResultCode("1");
+        json.setResultData(map);
+        json.setResultMsg("success");
+        return json;
+    }
+
+    /**
+     * 取消预约
+     * @return
+     * @throws IOException
+     */
+    @PostMapping(value = "/cancelAppointment")
+    public CommonJson cancelAppointment() throws IOException {
+        String token = ContextHolderUtils.getRequest().getHeader("token");
+        String params = HttpUtils.getBodyString(ContextHolderUtils.getRequest().getReader());
+
+        logger.info("AppointmentController.saveOnlineAppointment>>>>>>>>>>>>token:" + token + ",params:" + params);
+
+        JSONObject jsonObject = JSON.parseObject(params);
+        String appointmentId = jsonObject.getString("appointmentId");
+
+        AppointmentModel appointmentModel = appointmentRespository.getByIdIs(appointmentId);
+        appointmentModel.setFlag("0");
+        appointmentModel.setUpdateDate(new Date());
+        appointmentRespository.save(appointmentModel);
+
+        CommonJson json = new CommonJson();
+        json.setResultCode("1");
+        json.setResultData(null);
+        json.setResultMsg("success");
         return json;
     }
 }

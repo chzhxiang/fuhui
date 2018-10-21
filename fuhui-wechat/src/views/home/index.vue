@@ -28,16 +28,16 @@
         </template>
       </van-cell>
     </van-cell-group>
-    <van-cell-group v-if="isCarNum">
-      <van-cell :value="carNum" title="车牌号" icon="logistics" />
-    </van-cell-group>
-    <van-cell-group v-else>
-      <van-cell value="点击绑定" icon="logistics" is-link @click="checkPhone">
-        <template slot="title">
-          <span class="van-cell-text">车牌号</span>
-        </template>
-      </van-cell>
-    </van-cell-group>
+    <van-cell value="" icon="logistics" is-link url="#/bindCarNum">
+      <template slot="title">
+        <span class="van-cell-text">车牌绑定</span>
+        <van-tag type="danger">3张</van-tag>
+      </template>
+    </van-cell>
+    <van-cell v-for="carNum in carNumList" :key="carNum.id">
+      <div slot="title" class="van-cell-title">{{ carNum.carNum }}</div>
+      <div slot="right-icon"><van-button plain size="mini" type="danger" @click="delCarNumById(carNum.id, carNum.carNum)">删除</van-button></div>
+    </van-cell>
     <div style="height: 15px;" />
     <van-cell-group>
       <van-cell title="我的预约" icon="clock" is-link url="#/appointment" />
@@ -53,11 +53,12 @@
 </template>
 <script>
 import { Dialog } from 'vant'
-import { getUserInfo } from '@/api/wechatUser'
+import { getUserInfo, findCarNumListByOpenId, delCarNumById } from '@/api/wechatUser'
 import { getToken } from '@/utils/auth'
 import { Toast } from 'vant'
 
 export default {
+  inject: ['reload'],
   data() {
     return {
       active: 3,
@@ -65,8 +66,8 @@ export default {
       isPhone: false,
       phone: '',
       isCarNum: false,
-      carNum: '沪A888888',
-      wechatHeadImg: ''
+      wechatHeadImg: '',
+      carNumList: []
     }
   },
   created() {
@@ -79,7 +80,6 @@ export default {
         const info = response.resultData.info
         if (response.resultCode === '1') {
           // 初始化数据
-
           if (info.points !== null) {
             this.points = info.points
           }
@@ -98,6 +98,9 @@ export default {
           Toast('服务器异常，请稍后重试~')
         }
       })
+      findCarNumListByOpenId().then(response => {
+        this.carNumList = response.resultData.list
+      })
     },
     checkPhone() {
       console.log(11111)
@@ -108,6 +111,18 @@ export default {
           path: '/bindCarNum'
         })
       }
+    },
+    delCarNumById(id, carNum) {
+      Dialog.confirm({
+        message: '您将要删除车牌号为：' + carNum + '的车牌，此操作将不可逆，请确认'
+      }).then(() => {
+        delCarNumById(id).then(response => {
+          Toast(response.resultMsg)
+          this.reload()
+        })
+      }).catch(() => {
+        Toast('取消删除')
+      })
     }
   }
 }

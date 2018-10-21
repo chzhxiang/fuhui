@@ -22,6 +22,8 @@ public class AppointmentModel {
     private String openId;
     private String phone;
     private String cardId;
+    private String name;
+    private String description;
     // 篮球场预约日期
     private String appointmentDate;
     // 篮球场预约时间段
@@ -32,6 +34,8 @@ public class AppointmentModel {
     private String type;
     // 课程id
     private String courseId;
+    private Date courseStartDate;
+    private Date courseEndDate;
     // 是否有效 0无效 1有效
     private String flag;
 
@@ -87,6 +91,22 @@ public class AppointmentModel {
         this.cardId = cardId;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getAppointmentDate() {
         return appointmentDate;
     }
@@ -125,6 +145,22 @@ public class AppointmentModel {
 
     public void setCourseId(String courseId) {
         this.courseId = courseId;
+    }
+
+    public Date getCourseStartDate() {
+        return courseStartDate;
+    }
+
+    public void setCourseStartDate(Date courseStartDate) {
+        this.courseStartDate = courseStartDate;
+    }
+
+    public Date getCourseEndDate() {
+        return courseEndDate;
+    }
+
+    public void setCourseEndDate(Date courseEndDate) {
+        this.courseEndDate = courseEndDate;
     }
 
     public String getFlag() {

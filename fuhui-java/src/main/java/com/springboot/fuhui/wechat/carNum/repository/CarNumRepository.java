@@ -14,5 +14,8 @@ import java.util.List;
  **/
 public interface CarNumRepository extends PagingAndSortingRepository<CarNumModel, Long>, JpaSpecificationExecutor<CarNumModel> {
     List<CarNumModel> findAllByPhoneOrderByCreateDateDesc(String phone);
+    List<CarNumModel> findAllByCarNum(String carNum);
+    List<CarNumModel> findAllByOpenid(String openId);
+    CarNumModel getByIdIs(String id);
     void deleteById(String id);
 }

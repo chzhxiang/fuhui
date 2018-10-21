@@ -12,6 +12,8 @@ import com.springboot.fuhui.system.utils.ContextHolderUtils;
 import com.springboot.fuhui.system.utils.HttpUtils;
 import com.springboot.fuhui.system.utils.StaffCacheUtil;
 import com.springboot.fuhui.web.adminUser.model.AdminUserModel;
+import com.springboot.fuhui.wechat.carNum.model.CarNumModel;
+import com.springboot.fuhui.wechat.carNum.repository.CarNumRepository;
 import com.springboot.fuhui.wechat.wechatUser.model.WechatUserModel;
 import com.springboot.fuhui.wechat.wechatUser.repository.WechatUserRespository;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -22,6 +24,7 @@ import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -54,6 +57,9 @@ public class WechatUserController {
 
     @Autowired
     private WxMpService wxMpService;
+
+    @Autowired
+    CarNumRepository carNumRepository;
 
 
     @GetMapping(value = "/oauth2Wechat")
@@ -392,6 +398,14 @@ public class WechatUserController {
             return json;
         }
 
+        List<CarNumModel> list = carNumRepository.findAllByCarNum(carNum);
+
+        if (list.size() > 0) {
+            json.setResultCode("0");
+            json.setResultMsg("该车牌号已被绑定，请至服务台处理");
+            return json;
+        }
+
         WechatUserModel wechatUserModel = null;
 
         try {
@@ -405,12 +419,92 @@ public class WechatUserController {
             e.printStackTrace();
         }
 
-        wechatUserModel = wechatUserRespository.getByOpenIdIs(wechatUserModel.getOpenId());
-        wechatUserModel.setCarNumber(carNum);
-        wechatUserRespository.save(wechatUserModel);
+        List<CarNumModel> myList = carNumRepository.findAllByOpenid(wechatUserModel.getOpenId());
+
+        if (myList.size() >= 3) {
+            json.setResultCode("0");
+            json.setResultData(null);
+            json.setResultMsg("您已绑定3张车牌，请删除后重新绑定");
+            return json;
+        }
+
+        CarNumModel carNumModel = new CarNumModel();
+        carNumModel.setCarNum(carNum);
+        carNumModel.setCreateDate(new Date());
+        carNumModel.setOpenid(wechatUserModel.getOpenId());
+        carNumModel.setPhone(wechatUserModel.getPhone());
+        carNumRepository.save(carNumModel);
 
         json.setResultCode("1");
         json.setResultMsg("车牌绑定成功");
+        return json;
+    }
+
+    /**
+     * 根据openid获取车牌列表
+     * @return
+     */
+    @PostMapping(value = "/findCarNumListByOpenId")
+    public CommonJson findCarNumListByOpenId() {
+        String token = ContextHolderUtils.getRequest().getHeader("token");
+        logger.info("WechatUserController.findCarNumListByOpenId>>>>>>>>>>>>token:" + token);
+
+        WechatUserModel wechatUserModel = null;
+
+        try {
+            wechatUserModel = (WechatUserModel) StaffCacheUtil.create().get(token, new Callable<AdminUserModel>() {
+                @Override
+                public AdminUserModel call() {
+                    return null;
+                }
+            });
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        List<CarNumModel> myList = carNumRepository.findAllByOpenid(wechatUserModel.getOpenId());
+
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("list", myList);
+
+        CommonJson json = new CommonJson();
+        json.setResultCode("1");
+        json.setResultData(map);
+        json.setResultMsg("success");
+        return json;
+    }
+
+    /**
+     * 根据id删除车牌
+     * @return
+     * @throws IOException
+     */
+    @PostMapping(value = "/delCarNumById")
+    @Transactional
+    public CommonJson delCarNumById() throws IOException {
+        String token = ContextHolderUtils.getRequest().getHeader("token");
+
+        String params = HttpUtils.getBodyString(ContextHolderUtils.getRequest().getReader());
+        logger.info("WechatUserController.delCarNumById>>>>>>>>>>>>token:" + token + ",params:" + params);
+
+        JSONObject jsonObject = JSON.parseObject(params);
+        String carNumId = jsonObject.getString("id");
+
+        CarNumModel carNumModel = carNumRepository.getByIdIs(carNumId);
+
+        CommonJson json = new CommonJson();
+
+        if (carNumModel != null) {
+            carNumRepository.delete(carNumModel);
+            json.setResultCode("1");
+            json.setResultData(null);
+            json.setResultMsg("删除成功");
+        } else {
+            json.setResultCode("0");
+            json.setResultData(null);
+            json.setResultMsg("删除失败，该车牌不存在");
+        }
+
         return json;
     }
 }

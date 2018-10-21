@@ -4,7 +4,7 @@
       <div v-for="card in useList" :key="card.id">
         <van-panel :title="card.productName" :desc="card.desc" status="未使用">
           <div v-if="card.type > 0" slot="footer">
-            <van-button v-if="card.useNum > 1" size="small" plain type="warning" @click="useLog(card.id)">使用记录</van-button>
+            <!-- <van-button v-if="card.useNum > 1" size="small" plain type="warning" @click="useLog(card.id)">使用记录</van-button> -->
             <van-button size="small" type="danger" style="margin-left: 10px;" @click="cardUse(card.type, card.id)">去使用</van-button>
           </div>
         </van-panel>
@@ -13,9 +13,9 @@
       <div v-for="card in unList" :key="card.id">
         <van-panel :title="card.productName" :desc="card.desc" status="已使用">
           <div class="panel-div">使用时间: {{ card.updateDate | dataFormat }}</div>
-          <div slot="footer">
+          <!-- <div slot="footer">
             <van-button size="small" plain type="warning" @click="useLog(card.id)">使用记录</van-button>
-          </div>
+          </div> -->
         </van-panel>
         <div style="height: 10px;" />
       </div>

@@ -43,3 +43,20 @@ export function saveOnlineAppointment(courseId, cardId) {
     }
   })
 }
+
+export function findAllAppointmentByOpenId() {
+  return request({
+    url: '/mp/wechatAppointment/findAllAppointmentByOpenId',
+    method: 'post'
+  })
+}
+
+export function cancelAppointment(appointmentId) {
+  return request({
+    url: '/mp/wechatAppointment/cancelAppointment',
+    method: 'post',
+    data: {
+      appointmentId
+    }
+  })
+}

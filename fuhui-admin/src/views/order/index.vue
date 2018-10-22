@@ -59,8 +59,9 @@
         </template>
       </el-table-column>
       <el-table-column label="订单金额" align="center" width="150">
-        <template slot-scope="scope">
-          {{ scope.row.orderMoney / 100 }}
+        <template slot-scope="scope" >
+          <span v-if="scope.row.payType === '1'">{{ scope.row.orderMoney / 100 }}元</span>
+          <span v-if="scope.row.payType === '0'">{{ scope.row.orderMoney }}积分</span>
         </template>
       </el-table-column>
       <el-table-column label="系统订单号" align="center" width="200">

@@ -131,7 +131,7 @@ public class WechatOrderController {
             wechatOrderModel.setPhone(wechatOrderModel.getPhone());
             wechatOrderModel.setOrderMoney(needPayPoints);
             wechatOrderModel.setOrderStatus("1");
-            wechatOrderModel.setPayType(productModel.getType());
+            wechatOrderModel.setPayType(payType);
             wechatOrderModel.setProductNo(productModel.getId());
             wechatOrderModel.setProductName(productModel.getName());
 

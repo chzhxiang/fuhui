@@ -33,6 +33,8 @@ public class OnlineCourseModel {
     private String productId;
     // 限制名额
     private Integer num;
+    // 是否有效 0无效 1有效
+    private String flag;
 
     @Id
     @GeneratedValue(generator = "paymentableGenerator")
@@ -116,5 +118,13 @@ public class OnlineCourseModel {
 
     public void setNum(Integer num) {
         this.num = num;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
 }

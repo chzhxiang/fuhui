@@ -48,7 +48,7 @@ public class OnlineCourseController {
         JSONObject jsonObject = JSON.parseObject(params);
         String cardType = jsonObject.getString("cardType");
 
-        List<OnlineCourseModel> list = onlineCourseRepository.findAllByProductId(cardType);
+        List<OnlineCourseModel> list = onlineCourseRepository.findAllByProductIdAndFlag(cardType, "1");
 
         Map<String, Object> map = Maps.newHashMap();
         map.put("list", list);

@@ -68,8 +68,10 @@ public class OnlineCoursesController {
         String description = jsonObject.getString("description");
         String name = jsonObject.getString("name");
         String productId = jsonObject.getString("productId");
+        String num = jsonObject.getString("num");
         String startDate = jsonObject.getString("startDate");
         String endDate = jsonObject.getString("endDate");
+        String flag = jsonObject.getString("flag");
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -77,8 +79,10 @@ public class OnlineCoursesController {
         onlineCourseModel.setDescription(description);
         onlineCourseModel.setName(name);
         onlineCourseModel.setProductId(productId);
+        onlineCourseModel.setNum(Integer.parseInt(num));
         onlineCourseModel.setStartDate(sdf.parse(startDate));
         onlineCourseModel.setEndDate(sdf.parse(endDate));
+        onlineCourseModel.setFlag(flag);
 
         onlineCourseModel = onlineCourseRepository.save(onlineCourseModel);
 

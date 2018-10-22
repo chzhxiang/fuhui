@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function saveOnlineCourse(id, address, description, name, productId, startDate, endDate) {
+export function saveOnlineCourse(id, address, description, name, productId, num, startDate, endDate, flag) {
   return request({
     url: '/admin/onlineCourses/saveOnlineCourse',
     method: 'post',
@@ -10,8 +10,10 @@ export function saveOnlineCourse(id, address, description, name, productId, star
       description,
       name,
       productId,
+      num,
       startDate,
-      endDate
+      endDate,
+      flag
     }
   })
 }

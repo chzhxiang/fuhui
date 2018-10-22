@@ -45,6 +45,12 @@
           {{ scope.row.endDate | dataFormat }}
         </template>
       </el-table-column>
+      <el-table-column label="是否有效" align="center" width="300">
+        <template slot-scope="scope">
+          <span v-if="scope.row.flag === '1'">有效</span>
+          <span v-else>无效</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" width="300">
         <template slot-scope="scope">
           <el-button
@@ -71,6 +77,9 @@
         <el-form-item :label-width="formLabelWidth" label="上课地址">
           <el-input v-model="course.address" autocomplete="off" />
         </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="限制人数">
+          <el-input v-model="course.num" autocomplete="off" />
+        </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="开始时间">
           <el-date-picker
             v-model="course.startDate"
@@ -91,6 +100,14 @@
               :label="item.name"
               :value="item.id" />
           </el-select>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="限制人数">
+          <el-switch
+            v-model="course.flag"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-value="1"
+            inactive-value="0" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -139,7 +156,9 @@ export default {
         name: '',
         productId: [],
         startDate: '',
-        endDate: ''
+        endDate: '',
+        num: '',
+        flag: ''
       },
       products: []
     }
@@ -163,7 +182,7 @@ export default {
       })
     },
     saveOnlineCourse() {
-      saveOnlineCourse(this.course.id, this.course.address, this.course.description, this.course.name, this.course.productId, moment(this.course.startDate).format('YYYY-MM-DD HH:mm:ss'), moment(this.course.endDate).format('YYYY-MM-DD HH:mm:ss')).then(response => {
+      saveOnlineCourse(this.course.id, this.course.address, this.course.description, this.course.name, this.course.productId, this.course.num, moment(this.course.startDate).format('YYYY-MM-DD HH:mm:ss'), moment(this.course.endDate).format('YYYY-MM-DD HH:mm:ss'), this.course.flag).then(response => {
         if (response.resultCode === '1') {
           this.dialogFormVisible = false
           this.$message({
@@ -171,6 +190,7 @@ export default {
             type: 'success'
           })
         }
+        this.reload()
       })
     },
     getOnlineCourseById(id) {
@@ -184,8 +204,10 @@ export default {
         this.course.description = info.description
         this.course.name = info.name
         this.course.productId = info.productId
+        this.course.num = info.num
         this.course.startDate = info.startDate
         this.course.endDate = info.endDate
+        this.course.flag = info.flag
       })
     },
     delOnlineCoursesById(id) {

@@ -1,5 +1,15 @@
 import request from '@/utils/request'
 
+export function getOauthUrl(key) {
+  return request({
+    url: '/mp/wechatUser/getOauthUrl',
+    method: 'post',
+    data: {
+      key
+    }
+  })
+}
+
 export function getTokens(key) {
   return request({
     url: '/mp/wechatUser/getToken',

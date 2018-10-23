@@ -24,6 +24,7 @@ import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -43,7 +44,7 @@ import java.util.concurrent.ExecutionException;
  * Date:2018/10/7
  * Time:11:52
  **/
-@RestController
+@Controller
 @RequestMapping(path = "/mp/wechatUser")
 public class WechatUserController {
 
@@ -69,8 +70,39 @@ public class WechatUserController {
         return new ModelAndView(new RedirectView(url));
     }
 
+    @PostMapping(value = "/getOauthUrl")
+    @ResponseBody
+    public CommonJson getOauthUrl() throws IOException {
+
+        String params = HttpUtils.getBodyString(ContextHolderUtils.getRequest().getReader());
+
+        logger.info("WechatUserController.getOauthUrl>>>>>>>>>>>>params:" + params);
+
+        JSONObject jsonObject = JSON.parseObject(params);
+        String key = jsonObject.getString("key");
+
+        CommonJson json = new CommonJson();
+
+        if ("NA2i760YXSgfsiOlQl8z4ps5Zll73FfM".equals(key)) {
+            String url = wxMpService.oauth2buildAuthorizationUrl("http://fuhui.kaixindaka.com/mp/wechatUser/getCode", WxConsts.OAuth2Scope.SNSAPI_USERINFO, null);
+            logger.info("WechatUserController.getOauthUrl>>>>>>>>>>>>url:" + url);
+            Map<String, Object> map = Maps.newHashMap();
+            map.put("url", url);
+
+            json.setResultCode("1");
+            json.setResultData(map);
+            json.setResultMsg("success");
+            return json;
+        } else {
+            json.setResultCode("0");
+            json.setResultData(null);
+            json.setResultMsg("fail");
+            return json;
+        }
+    }
+
     @GetMapping(value = "/getCode")
-    public ModelAndView getCode(@RequestParam String code, HttpServletResponse response) throws WxErrorException, ExecutionException {
+    public ModelAndView getCode(@RequestParam String code, HttpServletResponse response) throws WxErrorException, ExecutionException, IOException {
         logger.info(">>>>>>>>>>>>>>>>WechatUserController.getToken.getCode>>>>>>>>>>>>>>>");
         WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
         WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, "zh_CN");
@@ -98,8 +130,9 @@ public class WechatUserController {
         String token = UUID.randomUUID().toString();
         // 将WechatUserModel存入缓存
         StaffCacheUtil.create().put(token, wechatUserModel);
+        response.sendRedirect("http://mp.kaixindaka.com/#/home?token=" + token);
 
-        return new ModelAndView(new RedirectView("http://mp.kaixindaka.com/#/?token=" + token));
+        return null;
     }
 
 
@@ -110,6 +143,7 @@ public class WechatUserController {
      * @throws ExecutionException
      */
     @PostMapping(value = "/getToken")
+    @ResponseBody
     public CommonJson getToken() throws IOException, ExecutionException {
         String params = HttpUtils.getBodyString(ContextHolderUtils.getRequest().getReader());
 
@@ -165,6 +199,7 @@ public class WechatUserController {
      * @return
      */
     @PostMapping(value = "/getUserInfo")
+    @ResponseBody
     public CommonJson getUserInfo() {
         String token = ContextHolderUtils.getRequest().getHeader("token");
 
@@ -207,6 +242,7 @@ public class WechatUserController {
      * @throws IOException
      */
     @PostMapping(value = "/sendSMS")
+    @ResponseBody
     public CommonJson sendSMS() throws IOException {
         String token = ContextHolderUtils.getRequest().getHeader("token");
 
@@ -262,6 +298,7 @@ public class WechatUserController {
      * @throws IOException
      */
     @PostMapping(value = "/bindPhone")
+    @ResponseBody
     public CommonJson bindPhone() throws IOException {
         String token = ContextHolderUtils.getRequest().getHeader("token");
 
@@ -381,6 +418,7 @@ public class WechatUserController {
      * @throws IOException
      */
     @PostMapping(value = "/bindCarNum")
+    @ResponseBody
     public CommonJson bindCarNum() throws IOException {
         String token = ContextHolderUtils.getRequest().getHeader("token");
 
@@ -445,6 +483,7 @@ public class WechatUserController {
      * @return
      */
     @PostMapping(value = "/findCarNumListByOpenId")
+    @ResponseBody
     public CommonJson findCarNumListByOpenId() {
         String token = ContextHolderUtils.getRequest().getHeader("token");
         logger.info("WechatUserController.findCarNumListByOpenId>>>>>>>>>>>>token:" + token);
@@ -480,6 +519,7 @@ public class WechatUserController {
      * @throws IOException
      */
     @PostMapping(value = "/delCarNumById")
+    @ResponseBody
     @Transactional
     public CommonJson delCarNumById() throws IOException {
         String token = ContextHolderUtils.getRequest().getHeader("token");

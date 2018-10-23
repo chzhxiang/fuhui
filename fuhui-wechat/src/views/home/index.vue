@@ -70,11 +70,12 @@ export default {
       carNumList: []
     }
   },
-  created() {
+  mounted() {
     this.getUserInfo()
   },
   methods: {
     getUserInfo() {
+      alert(111)
       getUserInfo(getToken()).then(response => {
         console.log(response.resultData.info)
         const info = response.resultData.info
